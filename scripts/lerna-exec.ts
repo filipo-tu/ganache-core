@@ -19,9 +19,24 @@ export function LernaExec(command?: string, args?: string[]) {
     args = replaceSpecialStrings(process.argv.slice(3));
   }
 
+  const env: NodeJS.ProcessEnv = {};
+  const keys = Object.keys(process.env);
+  const values = replaceSpecialStrings(Object.values(process.env) as string[]);
+  for (let i = 0; i < keys.length; i++) {
+    let key = keys[i];
+    if (key.startsWith("TS_NODE_") && key.endsWith("_PT")) {
+      // allow TS_NODE environment variables to not be processed
+      // by ts-node running the lerna scripts, but to be processed
+      // by the subsequent process
+      key = key.substring(0, key.length - 3);
+    }
+    env[keys[i]] = values[i];
+  }
+
   let result = spawnSync(command, args, {
     cwd: spawnCwd,
-    stdio: ["inherit", "inherit", "inherit"]
+    stdio: ["inherit", "inherit", "inherit"],
+    env
   });
 
   if (
