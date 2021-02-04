@@ -7,7 +7,7 @@ import { Transaction } from "./transaction";
 import { Address } from "./address";
 import { KECCAK256_RLP_ARRAY } from "ethereumjs-util";
 
-const { BUFFER_EMPTY, RPCQUANTITY_ZERO } = utils;
+const { BUFFER_EMPTY, RPCQUANTITY_ZERO, BUFFER_32_ZERO, BUFFER_8_ZERO } = utils;
 
 type BlockHeader = {
   parentHash: Data;
@@ -203,8 +203,8 @@ export class RuntimeBlock {
       gasUsed,
       header.timestamp,
       extraData.toBuffer(),
-      Buffer.allocUnsafe(32).fill(0), // mixHash
-      Buffer.allocUnsafe(8).fill(0) // nonce
+      BUFFER_32_ZERO, // mixHash
+      BUFFER_8_ZERO // nonce
     ];
     const rawTransactions = transactions.map(tx => tx.raw);
     const raw = [rawHeader, rawTransactions];
