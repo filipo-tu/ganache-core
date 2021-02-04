@@ -68,6 +68,9 @@ describe("api", () => {
             `Should not have retrieved a miner info for miner t01001, but receive: ${minerInfo}`
           );
         } catch (e) {
+          if (e.code === "ERR_ASSERTION") {
+            throw e;
+          }
           return;
         }
       });
@@ -87,6 +90,9 @@ describe("api", () => {
             `Should not have retrieved a miner info for miner t01001, but receive: ${minerInfo}`
           );
         } catch (e) {
+          if (e.code === "ERR_ASSERTION") {
+            throw e;
+          }
           return;
         }
       });
